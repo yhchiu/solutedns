@@ -2,7 +2,7 @@
 <h3><i class="fa fa-globe"></i> {$MLANG.domainname}: <small>{$domain}</small></h3>
 {if $dnswizard eq 'true'}
 {else}
-<p><input class="btn btn-sm btn-info" id="wizard" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$domainid}&wizard=yes'" value='{$MLANG.wizard}'></p>
+<p><input class="btn btn-sm btn-info" id="wizard" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$localid}&wizard=yes'" value='{$MLANG.wizard}'></p>
 {/if}
 <p>{$MLANG.domaindnsmanagementdesc}</p>
 {if $status_msg}
@@ -20,13 +20,13 @@
 		{if $wizard_page eq 'home'}
 		<h4>{$MLANG.WIZARD_START}</h4>
 		<ul>
-			<li><a href="index.php?m=solutedns&{$product_type}id={$domainid}&wizard=1&step=1">{$MLANG.WIZARD_GENERAL}</a></li>
-			<li><a href="index.php?m=solutedns&{$product_type}id={$domainid}&wizard=2">{$MLANG.WIZARD_SUBDOMAIN}</a></li>
-			<li><a href="index.php?m=solutedns&{$product_type}id={$domainid}&wizard=3">{$MLANG.WIZARD_COPYZONE}</a></li>
-			<li><a href="index.php?m=solutedns&{$product_type}id={$domainid}&wizard=4">{$MLANG.WIZARD_CREATESRV}</a></li>
+			<li><a href="index.php?m=solutedns&{$product_type}id={$localid}&wizard=1&step=1">{$MLANG.WIZARD_GENERAL}</a></li>
+			<li><a href="index.php?m=solutedns&{$product_type}id={$localid}&wizard=2">{$MLANG.WIZARD_SUBDOMAIN}</a></li>
+			<li><a href="index.php?m=solutedns&{$product_type}id={$localid}&wizard=3">{$MLANG.WIZARD_COPYZONE}</a></li>
+			<li><a href="index.php?m=solutedns&{$product_type}id={$localid}&wizard=4">{$MLANG.WIZARD_CREATESRV}</a></li>
 		</ul>		
 		<div class="pull-right">
-			<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$domainid}'" value="{$MLANG.btn_back}" />
+			<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$localid}'" value="{$MLANG.btn_back}" />
 		</div>
 		{elseif $wizard_page eq 'setup'}
 		{if $wizard_step eq '1'}
@@ -36,8 +36,8 @@
 		<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> {$MLANG.WIZARD_SETUP_WARN}</div>
 		<div class="pull-right">
 			<div class="form-group">	
-				<input class="btn-wizard btn btn-success" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$domainid}&wizard=1&step=1b'" value='{$MLANG.btn_continue}'>
-				<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$domainid}&wizard=yes'" value='{$MLANG.btn_back}'>
+				<input class="btn-wizard btn btn-success" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$localid}&wizard=1&step=1b'" value='{$MLANG.btn_continue}'>
+				<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$localid}&wizard=yes'" value='{$MLANG.btn_back}'>
 			</div>
 		</div>
 		<div class="row">
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		{elseif $wizard_step eq '2'}
-		<form name="setup1" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$domainid}&wizard=1&step=2">
+		<form name="setup1" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$localid}&wizard=1&step=2">
 			<input type="hidden" name="setup1" value="1" />
 			<input type="hidden" name="name" value="{$domain}" />
 			<input type="hidden" name="type" value="A" />
@@ -77,7 +77,7 @@
 		{elseif $wizard_step eq '3'}
 		<p>{$MLANG.WIZARD_SETUP_MAILSERVER_IP}</p>
 		
-		<form name="setup2" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$domainid}&wizard=1&step=2" >
+		<form name="setup2" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$localid}&wizard=1&step=2" >
 			<input type="hidden" name="setup2" value="3" />
 			<input type="hidden" name="name" value="{$domain}" />
 			<input type="hidden" name="type" value="A" />
@@ -100,7 +100,7 @@
 		{/if}
 		{elseif $wizard_page eq 'subdomain'}
 		<p>{$MLANG.WIZARD_SUBDOMAIN_DESC}</p><br />
-		<form name="newsub" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$domainid}&wizard=2" >
+		<form name="newsub" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$localid}&wizard=2" >
 			<input type="hidden" name="type" value="A" />
 			<input type="hidden" name="ttl" value="{$default_ttl}" />
 			<div class="row">
@@ -122,13 +122,13 @@
 				<div class="form-group">
 					<input class="btn btn-success" type="submit" name="newsub" value="{$MLANG.btn_add}">
 				</form>
-				<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$domainid}&wizard=yes'" value='{$MLANG.btn_back}'>
+				<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$localid}&wizard=yes'" value='{$MLANG.btn_back}'>
 			</div>
 		</div>
 		{elseif $wizard_page eq 'copyzone'}
 		<h4>{$MLANG.WIZARD_COPYZONE_TITLE}</h4>
 		<p>{$MLANG.WIZARD_COPYZONE_DESC}</p>
-		<form name="copyzone" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$domainid}&wizard=3" >
+		<form name="copyzone" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$localid}&wizard=3" >
 			<div class="form-group">
 				<select name="from" class="form-control">
 					{foreach from=$clientdomainlist item=ctrdomain}
@@ -142,13 +142,13 @@
 			<div class="pull-right">
 				<div class="form-group">
 					<input class="btn btn-success" type="submit" name="copyzone" value="{$MLANG.btn_continue}" {if $clientdomaincount < 1}disabled{/if}/>
-					<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$domainid}&wizard=yes'" value="{$MLANG.btn_back}" />
+					<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$localid}&wizard=yes'" value="{$MLANG.btn_back}" />
 				</div>
 			</div>	
 		</form>
 		{elseif $wizard_page eq 'addsrv'}
 		<p>{$MLANG.WIZARD_SRV_DESC}</p><br />
-		<form name="newsrv" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$domainid}&wizard=4" >
+		<form name="newsrv" method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&{$product_type}id={$localid}&wizard=4" >
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="form-group">
@@ -210,14 +210,14 @@
 				<div class="form-group">
 					<input class="btn btn-success" type="submit" name="newsrv" value="{$MLANG.btn_add}">
 				</form>
-				<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$domainid}&wizard=yes'" value="{$MLANG.btn_back}" />
+				<input class="btn-wizard btn btn-info" id="back" type="button" onclick="location.href='index.php?m=solutedns&{$product_type}id={$localid}&wizard=yes'" value="{$MLANG.btn_back}" />
 			</div>
 		</div>
 		{/if}
 	</div> <!-- End Wizard -->
 </div> <!-- End Wizard Container -->
 {/if}
-<form method="post" action="index.php?m=solutedns&{$product_type}id={$domainid}">
-	<input type="hidden" name="id" value="{$domainid}" />
+<form method="post" action="index.php?m=solutedns&{$product_type}id={$localid}">
+	<input type="hidden" name="id" value="{$localid}" />
 	<div class="pull-right"><input type="submit" value="{$LANG.clientareabacklink}" class="btn btn-default" /></div>
 </form>

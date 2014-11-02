@@ -2,7 +2,7 @@
 <h3><i class="fa fa-globe"></i> {$MLANG.domainname}: <small>{$domain}</small>
 	{if $dnswizard eq 'true'}
 	{else}
-	<span class="pull-right"><input class="btn btn-sm btn-info" id="wizard" type="button" onclick="location.href='index.php?m=solutedns&amp;{$product_type}id={$domainid}&amp;wizard=yes'" value='{$MLANG.wizard}'></span>
+	<span class="pull-right"><input class="btn btn-sm btn-info" id="wizard" type="button" onclick="location.href='index.php?m=solutedns&amp;{$product_type}id={$localid}&amp;wizard=yes'" value='{$MLANG.wizard}'></span>
 	{/if}
 </h3>
 <p><small>{$MLANG.domaindnsmanagementdesc}</small></p>
@@ -24,18 +24,18 @@
 <div class="table-responsive">
 	<table class="table">
 		<tr>
-			<th {if $dns_orderby eq "name"} class="headerSort{$dns_sort}"{/if}><a href="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$domainid}&name_{$dns_osort.name}">{$MLANG.name}</a></th>
-			<th {if $dns_orderby eq "type"} class="headerSort{$dns_sort}"{/if}><a href="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$domainid}&type_{$dns_osort.type}">{$MLANG.type}</a></th>
-			<th {if $dns_orderby eq "content"} class="headerSort{$dns_sort}"{/if}><a href="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$domainid}&content_{$dns_osort.content}">{$MLANG.content}</a></th>
+			<th {if $dns_orderby eq "name"} class="headerSort{$dns_sort}"{/if}><a href="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$localid}&name_{$dns_osort.name}">{$MLANG.name}</a></th>
+			<th {if $dns_orderby eq "type"} class="headerSort{$dns_sort}"{/if}><a href="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$localid}&type_{$dns_osort.type}">{$MLANG.type}</a></th>
+			<th {if $dns_orderby eq "content"} class="headerSort{$dns_sort}"{/if}><a href="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$localid}&content_{$dns_osort.content}">{$MLANG.content}</a></th>
 			<th>{$MLANG.prio}</th>
 			<th>{$MLANG.ttl}</th>
 			<th></th>
 		</tr>
-		<form method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$domainid}">
+		<form method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$localid}">
 			<input type="hidden" name="sdns_remoteid" value="{$remoteid}" />
 			<input type="hidden" name="sdns_action" value="edit" />
 			{foreach from=$dnsrecords item=dnsrecord}
-			<tr>
+			<tr id="row_{$dnsrecord.id}">
 				<td><input type="hidden" id="dnsrecid{$dnsrecord.id}" name="dnsrecid[{$dnsrecord.id}]" value="{$dnsrecord.id}" class="form-control" /><input disabled type="text" id="dnsrecordname{$dnsrecord.id}" name="dnsrecordname[{$dnsrecord.id}]" value="{$dnsrecord.name}" class="form-control" /></td>
 				<td><select disabled id="dnsrecordtype{$dnsrecord.id}" name="dnsrecordtype[{$dnsrecord.id}]" class="form-control">
 					{foreach from=$dnstypes item=dnstype}
@@ -65,13 +65,13 @@
 					{/if}</td>
 					<td class="sdns_client_management"><input {if $dnsrecord.type eq "SOA"}disabled style="display: none;" {elseif $dnsrecord.type eq "NS" && $dispset.disable_ns eq "true"}disabled style="display: none;"{/if} class="btn btn-sm btn-primary" style="display: visible;" id="dnsrecordedit{$dnsrecord.id}" onClick="edit('{$dnsrecord.id}')" type="button" value="{$MLANG.btn_edit}">
 						<input class="btn btn-sm btn-warning" style="display: none;" id="dnsrecordsave{$dnsrecord.id}" name="dnsrecordedit[{$dnsrecord.id}]" type="submit" value="{$MLANG.btn_save}">
-						<input {if $dnsrecord.type eq "SOA"}disabled{elseif $dnsrecord.type eq "NS" && $dispset.disable_ns eq "true"}disabled{/if} class="btn btn-sm btn-default" style="display: visible;" id="dnsrecorddelete{$dnsrecord.id}" type="button" onClick="location.href='{$delete_url}{$dnsrecord.id}'" value="{$MLANG.btn_delete}">
+          <input {if $dnsrecord.type eq "SOA"}disabled{elseif $dnsrecord.type eq "NS" && $dispset.disable_ns eq "true"}disabled{/if} class="btn btn-sm btn-default" style="display: visible;" id="dnsrecorddelete{$dnsrecord.id}" type="button" onClick="deleteRecord('{$dnsrecord.id}', '{$MLANG.btn_delete}', '{$MLANG.btn_cancel}')" value="{$MLANG.btn_delete}">
 					</td>
 				</tr>
 				{/foreach}
 			</form>
 			<tr>
-				<form method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$domainid}">
+				<form method="post" action="{$smarty.server.PHP_SELF}?m=solutedns&amp;{$dns_product_type}={$localid}">
 					<input type="hidden" name="sdns_remoteid" value="{$remoteid}" />
 					<input type="hidden" name="sdns_action" value="create" />
 					<td><input type="text" name="dnsrecordname[]" class="form-control" value="{if $send}{$send.name}{else}<domain>{/if}"/></td>
@@ -129,7 +129,7 @@
 		</div>
 		{/if}
 		{/if}
-		<form method="post" action="clientarea.php?action={$product_type}details">
-			<input type="hidden" name="id" value="{$domainid}" />
+		<form method="post" action="{if $product_type eq 'lone'}index.php?m=solutedns{else}clientarea.php?action={$product_type}details{/if}">
+  <input type="hidden" name="id" value="{$localid}" />
 			<div class="pull-right"><input type="submit" value="{$LANG.clientareabacklink}" class="btn btn-default" /></div>
 		</form>
