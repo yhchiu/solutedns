@@ -1,3 +1,4 @@
+<script src="//cdn.datatables.net/plug-ins/a5734b29083/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 {include file="$template/pageheader.tpl" title=$MLANG.title}
 <div id="dialog-import" title="{$MLANG.zone_import}" style="display: none;">
   <p class="sdns_dialog_desc">{$MLANG.zone_import_desc}</p>
