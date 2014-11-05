@@ -1,23 +1,39 @@
 {include file="$template/pageheader.tpl" title=$MLANG.title}
-<h3><i class="fa fa-globe"></i> {$MLANG.domainname}: <small>{$domain}</small>
-	{if $dnswizard eq 'true'}
-	{else}
-	<span class="pull-right"><input class="btn btn-sm btn-info" id="wizard" type="button" onclick="location.href='index.php?m=solutedns&amp;{$product_type}id={$localid}&amp;wizard=yes'" value='{$MLANG.wizard}'></span>
-	{/if}
-</h3>
-<p><small>{$MLANG.domaindnsmanagementdesc}</small></p>
+<div id="dialog-confirm" title="{$MLANG.confirm_delete_title}" style="display: none;">
+  <p style="margin-left:15px;">{$MLANG.confirm_delete_message}</p>
+</div>
+<div class="alert alert-info">
+  <div class="float-L sdns_domain">
+    <p>{$MLANG.domainname}: <strong>{$domain}</strong></p>
+  </div>
+  {if $dnswizard eq 'true'}
+  {else}
+  <div class="float-R btn-wizard">
+    <input class="btn-wizard btn btn-info" id="wizard" type="button" onClick="location.href='index.php?m=solutedns&amp;{$product_type}id={$localid}&amp;wizard=yes'" value='{$MLANG.wizard}'>
+  </div>
+  {/if}
+  <div style="clear: both;"></div>
+</div>
+<p>{$MLANG.domaindnsmanagementdesc}</p>
+<br />
 {if $status_msg}
-<div {if $dnsrecords}id="msgbox" {/if}class="alert alert-info">
-	<p>{$status_msg.title} {$status_msg.desc}</p>
+<div {if $dnsrecords}id="msgbox" {/if}class="alert alert-{$status_msg.type}">
+  <p><strong>{$status_msg.title}</strong></p>
+  <p>{$status_msg.desc}</p>
 </div>
 {/if}
+
 {if $delete_confirmation}
-<div class="alert alert-danger">
-	<h4>{$MLANG.confirm_delete_title} {$MLANG.confirm_delete_message}</h4>	
-	<div class="form-group">
-		<input class="btn btn-sm btn-danger" id="delete" type="button" onClick="location.href='{$delete_confirmation.confirm}'" value="{$MLANG.btn_delete}">
-		<input class="btn btn-sm btn-default" id="cancel" type="button" onClick="location.href='{$delete_confirmation.cancel}'" value="{$MLANG.btn_cancel}">
-	</div>
+<div class="alert alert-{$delete_confirmation.type}">
+  <div class="float-L">
+    <p><strong>{$MLANG.confirm_delete_title}</strong></p>
+    <p>{$MLANG.confirm_delete_message}</p>
+  </div>
+  <div class="float-R sdns_msg_option">
+    <input class="btn btn-danger" id="delete" type="button" onClick="location.href='{$delete_confirmation.confirm}'" value="{$MLANG.btn_delete}">
+    <input class="btn btn" id="cancel" type="button" onClick="location.href='{$delete_confirmation.cancel}'" value="{$MLANG.btn_cancel}">
+  </div>
+  <div style="clear: both;"></div>
 </div>
 {/if}
 {if $dnsrecords}
@@ -65,7 +81,7 @@
 					{/if}</td>
 					<td class="sdns_client_management"><input {if $dnsrecord.type eq "SOA"}disabled style="display: none;" {elseif $dnsrecord.type eq "NS" && $dispset.disable_ns eq "true"}disabled style="display: none;"{/if} class="btn btn-sm btn-primary" style="display: visible;" id="dnsrecordedit{$dnsrecord.id}" onClick="edit('{$dnsrecord.id}')" type="button" value="{$MLANG.btn_edit}">
 						<input class="btn btn-sm btn-warning" style="display: none;" id="dnsrecordsave{$dnsrecord.id}" name="dnsrecordedit[{$dnsrecord.id}]" type="submit" value="{$MLANG.btn_save}">
-          <input {if $dnsrecord.type eq "SOA"}disabled{elseif $dnsrecord.type eq "NS" && $dispset.disable_ns eq "true"}disabled{/if} class="btn btn-sm btn-default" style="display: visible;" id="dnsrecorddelete{$dnsrecord.id}" type="button" onClick="deleteRecord('{$dnsrecord.id}', '{$MLANG.btn_delete}', '{$MLANG.btn_cancel}')" value="{$MLANG.btn_delete}">
+          <input {if $dnsrecord.type eq "SOA"}disabled{elseif $dnsrecord.type eq "NS" && $dispset.disable_ns eq "true"}disabled{/if} class="btn btn-sm btn-default" style="display: visible;" id="dnsrecorddelete{$dnsrecord.id}" type="button" onClick="deleteRecord('{$dnsrecord.id}', '{$MLANG.btn_delete}', '{$MLANG.btn_cancel}')" value="{$MLANG.btn_delete}">          
 					</td>
 				</tr>
 				{/foreach}
